@@ -1,21 +1,19 @@
 <h1>
   Search Results
 </h1>
-<% @tracks.each_with_index do |a_track, the_index| %>
-  <div class="card p-1 m-2">
-    <div class="row no-gutters">
-      <div class="col-auto">
-        <img src="<%= a_track.album.images.last.fetch("url") %>" class="img-fluid" alt="">
-      </div>
-      <div class="col">
-        <div class="card-block px-2">
-          <h5 class="card-title"><%= a_track.name %></h5>
-          <p class="card-text"><%= a_track.artists.first.name %></p>
+<div class="row mb-5 justify-content-center">
+  <!--<div class="col-md-8r">>-->
+    <% @tracks.each_with_index do |a_track, the_index| %>
+      <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="<%= a_track.album.images.at(-2).fetch("url") %>" alt="Card image cap">
+        <div class="card-body">
+          <h6 class="card-title"><%= a_track.name %></h6>
+          <p class="card-text">by <%= a_track.artists.first.name %></p>
+          <a href="#" class="card-link">Card link</a>
+          <i class="far fa-heart"></i>
         </div>
       </div>
-    </div>
-    <div class="card-footer w-100 text-muted">
-      Footer Placeholder
-    </div>
-  </div>
-<% end %>
+        
+    <% end %>
+  <!--</div>-->
+</div>

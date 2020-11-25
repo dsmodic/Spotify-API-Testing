@@ -13,7 +13,7 @@ class SpotifyController < ApplicationController
   def return_search_results
     
     song_name = params.fetch("query_song_name")
-    @tracks = RSpotify::Track.search(song_name, limit: 10, market: 'US')
+    @tracks = RSpotify::Track.search(song_name, limit: 12, market: 'US')
     render({:template => "/spotify/song_search_results.html.erb"})
   end
 
