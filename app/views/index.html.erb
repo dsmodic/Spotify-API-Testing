@@ -1,0 +1,11 @@
+<h1>Hi</h1>
+
+<div>
+  <img src="<%= RSpotify::Artist.search("Arctic Monkeys").first.albums.first.images.last.fetch("url") %>">
+</div>
+
+<div>
+  <a href="<%= RSpotify::Artist.search("Arctic Monkeys").first.albums.first.tracks.first.preview_url %>">
+    Preview First tracks
+  </a >
+</div>
