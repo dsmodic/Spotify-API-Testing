@@ -1,0 +1,30 @@
+<h1>
+  Search Results
+</h1>
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <th scope="col"></th>
+    <th scope="col">Song Name</th>
+    <th scope="col">Artist</th>
+  </thead>
+  <tbody>
+    <% @tracks.each_with_index do |a_track, the_index| %>
+      <tr>
+        <td class="align-middle">
+          <img src="<%= a_track.album.images.last.fetch("url") %>">
+        </td>
+
+        <td class="align-middle">
+          <%= a_track.name %>
+        </td>
+        
+        <td class="align-middle">
+          <%= a_track.artists.first.name %>
+        </td>
+
+      </tr>
+
+    <% end %>
+  </tbody>
+</table>

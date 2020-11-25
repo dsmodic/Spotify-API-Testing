@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  #Routes for Spotify Controller
+
+  get("/search", {:controller => "spotify", :action => "search_form"})
+  get("/search_results", {:controller => "spotify", :action => "return_search_results"})
+  
+  
   # Routes for the Comment resource:
 
   # CREATE
