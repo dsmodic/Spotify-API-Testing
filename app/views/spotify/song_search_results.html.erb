@@ -14,6 +14,19 @@
               </a>
             </h1>
         </div>
+        <% if Comment.all.where(song_id: a_track.id).count == 0 %>
+          <!-- leave blank if no comments -->
+        <% else %>
+          <div class="card-img-overlay">
+              <h1 class="text-left">
+                <a href="<%= a_track.preview_url %>" class="text-light">
+                  <%= Comment.all.where(song_id: a_track.id).count %>
+                  <i class="far fa-comments"></i>
+                </a>
+              </h1>
+          </div>
+        <% end %>
+
         <div class="card-body">
           <% if a_track.name.length > 25 %>
             <h6 class="card-title"><%= a_track.name[0..24] %>...</h6>
