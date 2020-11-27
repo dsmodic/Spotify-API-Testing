@@ -1,14 +1,25 @@
-<h1>
-  Search Results
-</h1>
+<div class="text-center">
+  <h2>Here's what I found:</h2>
+</div>
+<hr>
 <div class="row mb-5 justify-content-center">
   <!--<div class="col-md-8r">>-->
     <% @tracks.each_with_index do |a_track, the_index| %>
-      <div class="card" style="width: 18rem;">
+      <div class="card mb-3" style="width: 18rem;">
         <img class="card-img-top" src="<%= a_track.album.images.at(-2).fetch("url") %>" alt="Card image cap">
         <div class="card-body">
-          <h6 class="card-title"><%= a_track.name %></h6>
-          <p class="card-text">by <%= a_track.artists.first.name %></p>
+          <% if a_track.name.length > 25 %>
+            <h6 class="card-title"><%= a_track.name[0..24] %>...</h6>
+          <% else %>
+            <h6 class="card-title"><%= a_track.name %></h6>
+          <% end %>
+          
+          <% if a_track.artists.first.name.length > 22 %>
+            <p class="card-text">by <%= a_track.artists.first.name[0..21] %>...</p>
+          <% else %>
+            <p class="card-text">by <%= a_track.artists.first.name %></p>
+          <% end %>
+          
           <a href="#" class="card-link">Card link</a>
           <i class="far fa-heart"></i>
         </div>
@@ -17,3 +28,36 @@
     <% end %>
   <!--</div>-->
 </div>
+
+<hr>
+
+<div class="container-fluid py-6">
+		<div class="row">
+			<div class="col-md-6 offset-md-3 text-black">
+				<h2 class="font-weight-bold">
+					Looking for something else?
+				</h2>
+
+				<form action="/search_results">
+					<div class="form-group">
+						<label for="zebra">
+            Enter the name of the song below.
+            </label>
+
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">
+                <i class="fas fa-search"></i>
+              </span>
+							</div>
+							<input class="form-control" id="zebra" name="query_song_name" type="text" placeholder="Example: Let It Be">
+          </div>
+						</div>
+
+						<button class="btn btn-primary btn-block">
+          Find Song
+        </button>
+				</form>
+			</div>
+		</div>
+	</div>
