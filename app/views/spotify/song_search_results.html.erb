@@ -7,6 +7,13 @@
     <% @tracks.each_with_index do |a_track, the_index| %>
       <div class="card mb-3" style="width: 18rem;">
         <img class="card-img-top" src="<%= a_track.album.images.at(-2).fetch("url") %>" alt="Card image cap">
+        <div class="card-img-overlay">
+            <h1 class="text-right">
+              <a href="<%= a_track.preview_url %>" class="text-light">
+                <i class="far fa-play-circle"></i>
+              </a>
+            </h1>
+        </div>
         <div class="card-body">
           <% if a_track.name.length > 25 %>
             <h6 class="card-title"><%= a_track.name[0..24] %>...</h6>
