@@ -28,6 +28,7 @@
         <% end %>
 
         <div class="card-body">
+          
           <% if a_track.name.length > 25 %>
             <h6 class="card-title"><%= a_track.name[0..24] %>...</h6>
           <% else %>
@@ -39,9 +40,24 @@
           <% else %>
             <p class="card-text">by <%= a_track.artists.first.name %></p>
           <% end %>
-          
-          <a href="#" class="card-link">Card link</a>
-          <i class="far fa-heart"></i>
+          <div>
+            <% if @current_user.likes.where(song_id: a_track.id).count == 0 %>
+              <form action="/insert_like" method="post">
+                <input type="hidden" name="query_user_id" value="<%= @current_user.id %>">
+                <input type="hidden" name="query_song_id" value="<%= a_track.id %>">
+                <button class="btn btn-link card-link pull-right">
+                  <i class="far fa-heart"></i> Like
+                </button>
+              </form>
+            <% else %>  
+              <form action="/delete_like" method="post">
+                <input type="hidden" name="query_id" value="<%= Like.all.where(user_id: @current_user.id, song_id: a_track.id).first.id %>">
+                <button class="btn btn-link card-link pull-right">
+                  <i class="fas fa-heart"></i> Unlike
+                </button>
+              </form>
+            <% end %>
+          </div>
         </div>
       </div>
         

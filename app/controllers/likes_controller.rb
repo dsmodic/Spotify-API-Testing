@@ -46,7 +46,7 @@ class LikesController < ApplicationController
   end
 
   def destroy
-    the_id = params.fetch("path_id")
+    the_id = params.fetch("query_id")
     the_like = Like.where({ :id => the_id }).at(0)
 
     the_like.destroy
