@@ -88,5 +88,22 @@ class UserAuthenticationController < ApplicationController
     
     redirect_to("/", { :notice => "User account cancelled" })
   end
+
+  def user_index
+    
+    @followed_users = @current_user.follows
+    follow_ids = @followed_users.pluck(:recipient_id)
+    follow_ids = follow_ids.push(@current_user.id)
+    @non_followed_users = User.all.where.not(id: follow_ids)
+
+    render({:template => "/user_authentication/user_index.html.erb"})
+  end
+
+  def user_likes
+    the_id = params.fetch("path_id")
+    
+    render({:template => "/likes/user_likes.html.erb"})
+
+  end
  
 end

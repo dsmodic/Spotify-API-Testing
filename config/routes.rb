@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   post("/modify_follow_request/:path_id", { :controller => "follow_requests", :action => "update" })
   
   # DELETE
-  get("/delete_follow_request/:path_id", { :controller => "follow_requests", :action => "destroy" })
+  post("/delete_follow_request", { :controller => "follow_requests", :action => "destroy" })
 
   #------------------------------
 
@@ -77,6 +77,12 @@ Rails.application.routes.draw do
   
   # DELETE RECORD
   get("/cancel_user_account", { :controller => "user_authentication", :action => "destroy" })
+
+  #ALL USERS
+  get("/users", {:controller => "user_authentication", :action => "user_index"})
+
+  #VIEW USER FEED
+  get("/user/:path_id", {:controller => "user_authentication", :action => "user_likes"})
 
   # ------------------------------
 

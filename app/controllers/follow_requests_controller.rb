@@ -24,7 +24,7 @@ class FollowRequestsController < ApplicationController
 
     if the_follow_request.valid?
       the_follow_request.save
-      redirect_to("/follow_requests", { :notice => "Follow request created successfully." })
+      redirect_to("/users", { :notice => "You're now following " + User.all.where(id: the_follow_request.recipient_id).first.first_name + "." })
     else
       redirect_to("/follow_requests", { :notice => "Follow request failed to create successfully." })
     end
@@ -46,11 +46,11 @@ class FollowRequestsController < ApplicationController
   end
 
   def destroy
-    the_id = params.fetch("path_id")
+    the_id = params.fetch("query_id")
     the_follow_request = FollowRequest.where({ :id => the_id }).at(0)
-
+    unfollow_name = User.all.where(id: the_follow_request.recipient_id).first.first_name
     the_follow_request.destroy
 
-    redirect_to("/follow_requests", { :notice => "Follow request deleted successfully."} )
+    redirect_to("/users", { :notice => "You're no longer following " + unfollow_name + "." } )
   end
 end
