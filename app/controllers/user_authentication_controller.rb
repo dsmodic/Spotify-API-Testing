@@ -91,10 +91,10 @@ class UserAuthenticationController < ApplicationController
 
   def user_index
     
-    @followed_users = @current_user.follows
+    @followed_users = @current_user.follows.order(last_name: "asc")
     follow_ids = @followed_users.pluck(:recipient_id)
     follow_ids = follow_ids.push(@current_user.id)
-    @non_followed_users = User.all.where.not(id: follow_ids)
+    @non_followed_users = User.all.where.not(id: follow_ids).order(last_name:"asc")
 
     render({:template => "/user_authentication/user_index.html.erb"})
   end
