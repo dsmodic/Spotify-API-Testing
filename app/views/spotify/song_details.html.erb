@@ -1,10 +1,11 @@
 <div class="text-center">
-  <h2>Here's what I found:</h2>
+  <h2>Song details:</h2>
 </div>
+
 <hr>
 
 <div class="row mb-5 justify-content-center">  
-    <% @tracks.each_with_index do |a_track, the_index| %>
+    <% a_track = RSpotify::Track.find(@the_song_id) %>
       <div class="card mb-3" style="width: 18rem;">
         <img class="card-img-top" src="<%= a_track.album.images.at(-2).fetch("url") %>" alt="Card image cap">
         
@@ -27,20 +28,15 @@
             </h1>
         </div>
         
+
         <div class="card-body">
           
-          <% if a_track.name.length > 25 %>
-            <a href="/song/<%= a_track.id %>" class="card-title card-link font-weight-bold"><%= a_track.name[0..24] %>...</a>
-          <% else %>
-            <a href="/song/<%= a_track.id %>" class="card-title card-link font-weight-bold"><%= a_track.name %></a>
-            <!--<h6 class="card-title"><%= a_track.name %></h6>-->
-          <% end %>
+          <h6 class="card-title"><%= a_track.name %></h6>
           
-          <% if a_track.artists.first.name.length > 22 %>
-            <p class="card-text">by <%= a_track.artists.first.name[0..21] %>...</p>
-          <% else %>
-            <p class="card-text">by <%= a_track.artists.first.name %></p>
-          <% end %>
+          <p class="card-text">by <%= a_track.artists.first.name %></p>
+
+          <p class="card-text">Album: <%= a_track.album.name %></p>          
+          
           <div>
             <% if @current_user.likes.where(song_id: a_track.id).count == 0 %>
               <form action="/insert_like" method="post">
@@ -96,41 +92,65 @@
               </form>
             <% end %>
           </div>
+
+          <ul class="list-unstyled pt-3">
+            <% Comment.all.where(song_id: a_track.id).order(created_at: "asc").each do |a_comment| %>
+              <li class="media mb-2">
+                <div class="media-body">
+                  <h6>
+                    <a href="/user/<%= a_comment.commenter_id %>" class="card-link">
+                      <%= User.all.where(id: a_comment.commenter.id).first.first_name %>
+                    </a>
+                    <small>
+                      <%= time_ago_in_words(a_comment.created_at) %> ago
+                    
+                    <% if a_comment.commenter_id == @current_user.id %>
+                        <form action="/delete_comment" method="post">
+                          <input type="hidden" name="query_song_id" value="<%= a_comment.song_id %>">
+                          <input type="hidden" name="query_id" value="<%= a_comment.id %>">
+                          <button class="btn btn-link card-link">
+                            (delete comment)
+                          </button>
+                        </form>
+                        
+                    
+                    <% end %>
+                    </small>
+                  </h6>
+                  <%= a_comment.body %>
+                </div>
+              </li>
+            <% end %>
+            <li class="media">
+              <div class="media-body">
+                <form action="/insert_comment" method="post" class="pt-4">
+                  <input type="hidden" name="query_song_id" value="<%= a_track.id %>">
+                  <input type="hidden" name="query_commenter_id" value="<%= @current_user.id %>">
+                  <!-- Label and input for body -->
+                  <div class="form-group">
+                    <label for="body" class="sr-only">
+                      Body
+                    </label>
+
+                    <div class="input-group">
+                      <input type="text" id="body" name="query_body" class="form-control" placeholder="Add a comment..." required>
+
+                      <span class="input-group-append">
+                        <button class="btn btn-primary" type="submit">
+                          <i class="far fa-comment"></i>
+                        </button>
+                      </span>
+                    </div> <!-- input-group -->
+                  </div>  <!-- form-group -->
+
+                </form>
+              </div>
+            </li>
+
+          </ul>
+
+
         </div>
-      </div>
-        
-    <% end %>
+      </div>        
+    
 </div>
-
-<hr>
-
-<div class="container-fluid py-6">
-		<div class="row">
-			<div class="col-md-6 offset-md-3 text-black">
-				<h2 class="font-weight-bold">
-					Looking for something else?
-				</h2>
-
-				<form action="/search_results">
-					<div class="form-group">
-						<label for="zebra">
-            Enter the name of the song below.
-            </label>
-
-						<div class="input-group">
-							<div class="input-group-prepend">
-								<span class="input-group-text">
-                <i class="fas fa-search"></i>
-              </span>
-							</div>
-							<input class="form-control" id="zebra" name="query_song_name" type="text" placeholder="Example: Let It Be">
-          </div>
-						</div>
-
-						<button class="btn btn-primary btn-block">
-          Find Song
-        </button>
-				</form>
-			</div>
-		</div>
-	</div>

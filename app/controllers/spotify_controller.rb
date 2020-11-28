@@ -21,4 +21,9 @@ class SpotifyController < ApplicationController
     end
   end
 
+  def song_details
+    @the_song_id = params.fetch("path_id")
+    render({template: "/spotify/song_details"})
+  end
+
 end

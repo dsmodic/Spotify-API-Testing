@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   get("/search", {:controller => "spotify", :action => "search_form"})
   get("/search_results", {:controller => "spotify", :action => "return_search_results"})
-  
+  get("/song/:path_id", {controller: "spotify", action: "song_details"})
   
   # Routes for the Comment resource:
 
@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   post("/modify_comment/:path_id", { :controller => "comments", :action => "update" })
   
   # DELETE
-  get("/delete_comment/:path_id", { :controller => "comments", :action => "destroy" })
+  post("/delete_comment", { :controller => "comments", :action => "destroy" })
 
   #------------------------------
 

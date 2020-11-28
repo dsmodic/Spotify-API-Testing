@@ -25,9 +25,9 @@ class CommentsController < ApplicationController
 
     if the_comment.valid?
       the_comment.save
-      redirect_to("/comments", { :notice => "Comment created successfully." })
+      redirect_to("/song/" + the_comment.song_id, { :notice => "Comment created successfully." })
     else
-      redirect_to("/comments", { :notice => "Comment failed to create successfully." })
+      redirect_to("/song/" + the_comment.song_id, { :notice => "Comment failed to create successfully." })
     end
   end
 
@@ -48,11 +48,12 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    the_id = params.fetch("path_id")
+    the_id = params.fetch("query_id")
+    the_song = params.fetch("query_song_id")
     the_comment = Comment.where({ :id => the_id }).at(0)
 
     the_comment.destroy
 
-    redirect_to("/comments", { :notice => "Comment deleted successfully."} )
+    redirect_to("/song/" + the_song, { :notice => "Comment deleted successfully."} )
   end
 end
