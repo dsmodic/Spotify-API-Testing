@@ -82,7 +82,7 @@ Rails.application.routes.draw do
   get("/users", {:controller => "user_authentication", :action => "user_index"})
 
   #VIEW USER FEED
-  get("/user/:path_id", {:controller => "user_authentication", :action => "user_likes"})
+  get("/user/:path_id", {:controller => "spotify", :action => "user_likes"})
 
   # ------------------------------
 
