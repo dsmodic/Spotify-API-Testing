@@ -2,7 +2,13 @@
   <h2>Your Feed <i class="fab fa-slideshare"></i></h2>
 </div>
 <div class="text-center">
-  <small>The songs liked by the people you follow.</small>
+  <small>The songs liked by the <%= @current_user.follows.count.to_s %> 
+  <% if @current_user.follows.count == 1 %>
+    person
+  <% else %>
+    people 
+  <% end %>
+  you follow.</small>
 </div>
 
 <hr>
