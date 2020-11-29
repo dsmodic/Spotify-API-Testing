@@ -37,7 +37,8 @@ class SpotifyController < ApplicationController
       @tracks = 0
     else
       unique_feed_likes = feed_likes.uniq(&:song_id)
-      feed_song_ids = unique_feed_likes.pluck(:song_id)
+      desc_unique_feed_likes = Like.all.where(id: unique_feed_likes).order(created_at: "desc")
+      feed_song_ids = desc_unique_feed_likes.pluck(:song_id)
       @tracks = RSpotify::Track.find(feed_song_ids)
     end
 

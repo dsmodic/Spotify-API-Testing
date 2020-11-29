@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light mb-4">
   <div class="container">
     <a class="navbar-brand" href="/">
-      Dan's Final Project
+      HaveYouHeard
     </a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-nav-links" aria-controls="collapsible-nav-links" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,17 +20,24 @@
             <i class="fas fa-users"></i> All Users
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/user/<%= @current_user.id %>">
-            <i class="fas fa-heart"></i> My Likes
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/feed">
-            <i class="fab fa-slideshare"></i> My Feed
-          </a>
-        </li>
         
+        <% if @current_user == nil %>
+          
+        <% else %>
+          <li class="nav-item">
+            <a class="nav-link" href="/user/<%= @current_user.id %>">
+              <i class="fas fa-heart"></i> My Likes
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/feed">
+              <i class="fab fa-slideshare"></i> My Feed
+            </a>
+          </li>
+          
+        <% end %>
+
+        <!--Commenting Out Resources
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Resources
@@ -47,6 +54,35 @@
             </a>
           </div>
         </li>
+        -->
+      </ul>
+      <ul class="navbar-nav">
+          <% if @current_user == nil %>
+          <li class="nav-item">
+            <a class="nav-link" href="/user_sign_in">
+              <i class="fas fa-sign-in-alt"></i> Sign In
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/user_sign_up">
+              <i class="fas fa-user-plus"></i> Sign Up
+            </a>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <a href="/edit_user_profile" class="nav-link">
+              <i class="fas fa-edit"></i>
+              <%= @current_user.first_name%>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/user_sign_out" data-method="delete" class="nav-link">
+              <i class="fas fa-sign-out-alt"></i>
+              Sign Out
+            </a>
+          </li>
+        <% end %>
+          
       </ul>
     </div> <!-- .navbar-collapse -->
   </div> <!-- .container -->
