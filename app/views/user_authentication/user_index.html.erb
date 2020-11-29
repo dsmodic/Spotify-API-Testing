@@ -93,7 +93,7 @@
         <ul class="list-group">
           <% @current_user.followers.each do |a_follower| %>
             <li class="list-group-item">
-              <a href="/users/<%= a_follower.id %>">
+              <a href="/user/<%= a_follower.id %>">
                 <%= a_follower.first_name %> <%= a_follower.last_name %>
                 (<%= a_follower.user_name %>)
               </a>
