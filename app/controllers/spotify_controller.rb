@@ -22,7 +22,6 @@ class SpotifyController < ApplicationController
       liked_song_ids = user_likes.pluck(:song_id)
       @tracks = RSpotify::Track.find(liked_song_ids)
     end
-
     
     render({:template => "/likes/user_likes.html.erb"})
 
@@ -30,7 +29,9 @@ class SpotifyController < ApplicationController
 
   def user_feed
     follow_ids = @current_user.follows.pluck(:recipient_id)
-    follow_ids = follow_ids.push(@current_user.id)
+    
+    #Commented out to exclude user's own likes in their feed
+    #follow_ids = follow_ids.push(@current_user.id)
     
     feed_likes = Like.all.where(user_id: follow_ids).order(created_at: "asc")
     

@@ -3,6 +3,9 @@
     <h2>Your Likes <i class="fas fa-heart"></i></h2>
   </div>
   <div class="text-center">
+    <small>Followers: <%= @the_user.followers.count %> | Following: <%= @the_user.follows.count %></small>
+  </div>
+  <div class="text-center">
     <small>The songs that you like.</small>
   </div>
 <% else %>
@@ -10,7 +13,10 @@
     <h2><%= @the_user.first_name %>'s Likes <i class="fas fa-heart"></i></h2>
   </div>
   <div class="text-center">
-    <small>The songs that <%= @the_user.first_name %> <%= @the_user.last_name %> likes.</small>
+    <small>Followers: <%= @the_user.followers.count %> | Following: <%= @the_user.follows.count %></small>
+  </div>
+  <div class="text-center">
+    <small>The songs that <%= @the_user.first_name %> <%= @the_user.last_name %> (<%= @the_user.user_name %>) likes.</small>
   </div>
 <% end %>
 

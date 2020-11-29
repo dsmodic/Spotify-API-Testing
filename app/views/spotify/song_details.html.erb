@@ -1,156 +1,183 @@
 <div class="text-center">
-  <h2>Song comments:</h2>
+  <h2>Song details:</h2>
 </div>
-
 <hr>
-
-<div class="row mb-5 justify-content-center">  
-    <% a_track = RSpotify::Track.find(@the_song_id) %>
-      <div class="card mb-3" style="width: 18rem;">
-        <img class="card-img-top" src="<%= a_track.album.images.at(-2).fetch("url") %>" alt="Card image cap">
-        
-        <% if Comment.all.where(song_id: a_track.id).count == 0 %>
-          <!-- leave blank if no comments -->
-        <% else %>
-          <div class="card-img-overlay">
-              <h1 class="text-left text-light">
-                <%= Comment.all.where(song_id: a_track.id).count %>
-                <i class="far fa-comments"></i>
-              </h1>
-          </div>
-        <% end %>
-        
-        <div class="card-img-overlay">
-            <h1 class="text-right">
-              <a href="<%= a_track.preview_url %>" class="text-light">
-                <i class="far fa-play-circle"></i>
-              </a>
-            </h1>
-        </div>
-        
-
-        <div class="card-body">
-          
-          <h6 class="card-title"><%= a_track.name %></h6>
-          
-          <p class="card-text">by <%= a_track.artists.first.name %></p>
-
-          <p class="card-text">Album: <%= a_track.album.name %></p>          
-          
-          <div>
-            <% if @current_user.likes.where(song_id: a_track.id).count == 0 %>
-              <form action="/insert_like" method="post">
-                <input type="hidden" name="query_user_id" value="<%= @current_user.id %>">
-                <input type="hidden" name="query_song_id" value="<%= a_track.id %>">
-                <!-- Determine which people the user follows likes the song -->
-                <% 
+<div class="row mb-1 justify-content-center">
+  <% a_track = RSpotify::Track.find(@the_song_id) %>
+  <div class="card mb-3" style="width: 18rem;">
+    <img class="card-img-top" src="<%= a_track.album.images.at(-2).fetch("url") %>" alt="Card image cap">
+    <% if Comment.all.where(song_id: a_track.id).count == 0 %>
+      <!-- leave blank if no comments -->
+    <% else %>
+      <div class="card-img-overlay">
+        <h1 class="text-left text-light">
+          <%= Comment.all.where(song_id: a_track.id).count %>
+          <i class="far fa-comments"></i>
+        </h1>
+      </div>
+    <% end %>
+    <div class="card-img-overlay">
+      <h1 class="text-right">
+        <a href="<%= a_track.preview_url %>" class="text-light">
+          <i class="far fa-play-circle"></i>
+        </a>
+      </h1>
+    </div>
+    <div class="card-body">
+      <h6 class="card-title"><%= a_track.name %></h6>
+      <p class="card-text">by <%= a_track.artists.first.name %></p>
+      <p class="card-text">Album: <%= a_track.album.name %></p>
+      <p class="card-text">Release Date: <%= a_track.album.release_date %></p>
+      <p class="card-text">Spotify Popularity Ranking: <%= number_to_percentage(a_track.popularity, precision: 0) %></p>
+      <div>
+        <% if @current_user.likes.where(song_id: a_track.id).count == 0 %>
+          <form action="/insert_like" method="post">
+            <input type="hidden" name="query_user_id" value="<%= @current_user.id %>">
+            <input type="hidden" name="query_song_id" value="<%= a_track.id %>">
+            <!-- Determine which people the user follows likes the song -->
+            <% 
                   song_likes = Like.all.where(song_id: a_track.id)
                   follow_ids = @current_user.follows.pluck(:recipient_id)
                   follow_likes = song_likes.where(user_id: follow_ids).order(created_at: "asc")              
                 %>
-                <% if follow_likes.count == 0 %>
-                  <small>Be the first to like this</small>
-                <% elsif follow_likes.count ==1 %>
-                  <small>
-                    <%= User.all.where(id: follow_likes.at(0).user_id).first.first_name %> likes this
-                  </small>
-                <% else %>
-                  <small>
-                    <%= User.all.where(id: follow_likes.at(0).user_id).first.first_name %> and
-                    <%= follow_likes.count - 1 %> more like this
-                  </small>
-                <% end %>            
-                <button class="btn btn-link card-link pull-right">
-                  <i class="far fa-heart"></i> Like
-                </button>
-              </form>
-            <% else %>  
-              <form action="/delete_like" method="post">
-                <input type="hidden" name="query_id" value="<%= Like.all.where(user_id: @current_user.id, song_id: a_track.id).first.id %>">
-                <!-- Determine which people the user follows likes the song -->
-                <% 
+            <% if follow_likes.count == 0 %>
+              <small>Be the first to like this</small>
+            <% elsif follow_likes.count ==1 %>
+              <small>
+                <%= User.all.where(id: follow_likes.at(0).user_id).first.first_name %> likes this
+              </small>
+            <% else %>
+              <small>
+                <%= User.all.where(id: follow_likes.at(0).user_id).first.first_name %> and
+                <%= follow_likes.count - 1 %> more like this
+              </small>
+            <% end %>
+            <button class="btn btn-link card-link pull-right">
+              <i class="far fa-heart"></i> Like
+            </button>
+          </form>
+        <% else %>
+          <form action="/delete_like" method="post">
+            <input type="hidden" name="query_id" value="<%= Like.all.where(user_id: @current_user.id, song_id: a_track.id).first.id %>">
+            <!-- Determine which people the user follows likes the song -->
+            <% 
                   song_likes = Like.all.where(song_id: a_track.id)
                   follow_ids = @current_user.follows.pluck(:recipient_id)
                   follow_ids = follow_ids.push(@current_user.id)
                   follow_likes = song_likes.where(user_id: follow_ids).order(created_at: "asc")              
                 %>
-                <% if follow_likes.count == 1 %>
-                  <small>You like this</small>
-                <% elsif User.all.where(id: follow_likes.at(0).user_id).first.id == @current_user.id %>
-                  <small>
-                    You and <%= follow_likes.count - 1 %> more like this
-                  </small>
-                <% else %>
-                  <small>
-                    <%= User.all.where(id: follow_likes.at(0).user_id).first.first_name %> and
-                    <%= follow_likes.count - 1 %> more like this
-                  </small>
-                <% end %> 
-                <button class="btn btn-link card-link pull-right">
-                  <i class="fas fa-heart"></i> Unlike
-                </button>
-              </form>
+            <% if follow_likes.count == 1 %>
+              <small>You like this</small>
+            <% elsif User.all.where(id: follow_likes.at(0).user_id).first.id == @current_user.id %>
+              <small>
+                You and <%= follow_likes.count - 1 %> more like this
+              </small>
+            <% else %>
+              <small>
+                <%= User.all.where(id: follow_likes.at(0).user_id).first.first_name %> and
+                <%= follow_likes.count - 1 %> more like this
+              </small>
             <% end %>
-          </div>
+            <button class="btn btn-link card-link pull-right">
+              <i class="fas fa-heart"></i> Unlike
+            </button>
+          </form>
+        <% end %>
+      </div>  <!-- likes div -->
+    </div>  <!-- card body -->
+  </div>  <!-- card -->
+</div> <!-- row -->
 
-          <ul class="list-unstyled pt-3">
-            <% Comment.all.where(song_id: a_track.id).order(created_at: "asc").each do |a_comment| %>
-              <li class="media mb-2">
-                <div class="media-body">
-                  <h6>
-                    <a href="/user/<%= a_comment.commenter_id %>" class="card-link">
-                      <%= User.all.where(id: a_comment.commenter.id).first.first_name %>
-                    </a>
-                    <small>
-                      <%= time_ago_in_words(a_comment.created_at) %> ago
-                    
-                    <% if a_comment.commenter_id == @current_user.id %>
-                        <form action="/delete_comment" method="post">
-                          <input type="hidden" name="query_song_id" value="<%= a_comment.song_id %>">
-                          <input type="hidden" name="query_id" value="<%= a_comment.id %>">
-                          <button class="btn btn-link card-link">
-                            (delete your comment)
-                          </button>
-                        </form>
-                        
-                    
-                    <% end %>
-                    </small>
-                  </h6>
-                  <%= a_comment.body %>
+<div class="row mb-1 justify-content-center">
+  <div class="card mb-2" style="width: 18rem;">
+    <div class="card-header">
+      <h3 class="card-title">
+        Comments:
+      </h3>
+    </div>    
+    <div class="card-body">  
+      <ul class="list-unstyled pt-2">
+        <% Comment.all.where(song_id: a_track.id).order(created_at: "asc").each do |a_comment| %>
+          <li class="media mb-2">
+            <div class="media-body">
+              <h6>
+                <a href="/user/<%= a_comment.commenter_id %>" class="card-link">
+                  <%= User.all.where(id: a_comment.commenter.id).first.first_name %>
+                </a>
+                <small>
+                  <%= time_ago_in_words(a_comment.created_at) %> ago
+                </small>
+              </h6>
+              <%= a_comment.body %>
+              
+                <% if a_comment.commenter_id == @current_user.id %>
+                  <small>  
+                    <form action="/delete_comment" method="post">
+                      <input type="hidden" name="query_song_id" value="<%= a_comment.song_id %>">
+                      <input type="hidden" name="query_id" value="<%= a_comment.id %>">
+                      <button class="btn btn-link card-link">
+                        (delete your comment)
+                      </button>
+                    </form>
+                  </small>
+                <% end %>
+              
+            </div>
+          </li>
+        <% end %>
+        <li class="media">
+          <div class="media-body">
+            <form action="/insert_comment" method="post" class="pt-4">
+              <input type="hidden" name="query_song_id" value="<%= a_track.id %>">
+              <input type="hidden" name="query_commenter_id" value="<%= @current_user.id %>">
+              <!-- Label and input for body -->
+              <div class="form-group">
+                <label for="body" class="sr-only">
+                  Body
+                </label>
+                <div class="input-group">
+                  <input type="text" id="body" name="query_body" class="form-control" placeholder="Add a comment..." required>
+                  <span class="input-group-append">
+                    <button class="btn btn-primary" type="submit">
+                      <i class="far fa-comment"></i>
+                    </button>
+                  </span>
                 </div>
-              </li>
-            <% end %>
-            <li class="media">
-              <div class="media-body">
-                <form action="/insert_comment" method="post" class="pt-4">
-                  <input type="hidden" name="query_song_id" value="<%= a_track.id %>">
-                  <input type="hidden" name="query_commenter_id" value="<%= @current_user.id %>">
-                  <!-- Label and input for body -->
-                  <div class="form-group">
-                    <label for="body" class="sr-only">
-                      Body
-                    </label>
-
-                    <div class="input-group">
-                      <input type="text" id="body" name="query_body" class="form-control" placeholder="Add a comment..." required>
-
-                      <span class="input-group-append">
-                        <button class="btn btn-primary" type="submit">
-                          <i class="far fa-comment"></i>
-                        </button>
-                      </span>
-                    </div> <!-- input-group -->
-                  </div>  <!-- form-group -->
-
-                </form>
+                <!-- input-group -->
               </div>
+              <!-- form-group -->
+            </form>
+          </div>
+          <!-- media body -->
+        </li>
+      </ul>  <!-- commment list -->
+    </div>  <!-- card body -->
+  </div>  <!-- card -->
+</div> <!-- row -->
+<% if follow_likes.count < 2 %>
+  <!-- Intentionally left blank -->
+<% else %>
+  <div class="row mb-1 justify-content-center">
+    <div class="card mb-2" style="width: 18rem;">
+      <div class="card-header">
+        <h3 class="card-title">
+          People you follow that like this song:
+        </h3>
+      </div>
+      <ul class="list-group">
+        <% User.all.where(id: follow_likes.pluck(:user_id)).each do |a_user| %>
+          <% if a_user.id == @current_user.id %>
+            <!-- Intentionally blank -->
+          <% else %>
+            <li class="list-group-item">
+              <a href="/user/<%= a_user.id %>">
+                <%= a_user.first_name %> <%= a_user.last_name %>
+                (<%= a_user.user_name %>)
+              </a>
             </li>
-
-          </ul>
-
-
-        </div>
-      </div>        
-    
-</div>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>

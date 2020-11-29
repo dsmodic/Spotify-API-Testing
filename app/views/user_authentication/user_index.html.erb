@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row mb-2">
   <div class="col-md-8 offset-md-2">
     <div class="card">
       <div class="card-header">
@@ -35,10 +35,7 @@
     </div>
   </div>
 </div>
-
-<hr>
-
-<div class="row">
+<div class="row mb-2">
   <div class="col-md-8 offset-md-2">
     <div class="card">
       <div class="card-header">
@@ -68,6 +65,38 @@
                   Follow
                 </button>
               </form>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div class="row mb-2">
+  <div class="col-md-8 offset-md-2">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">
+          Your followers:
+        </h3>
+      </div>      
+      <% if @current_user.followers.count == 0 %>
+        <ul class="list-group">
+          <li class="list-group-item">
+            You don't have any followers yet.
+          </li>
+        </ul>
+      <% else %>
+        <ul class="list-group">
+          <% @current_user.followers.each do |a_follower| %>
+            <li class="list-group-item">
+              <a href="/users/<%= a_follower.id %>">
+                <%= a_follower.first_name %> <%= a_follower.last_name %>
+                (<%= a_follower.user_name %>)
+              </a>
             </li>
           <% end %>
         </ul>
