@@ -1,5 +1,5 @@
 <div class="text-center">
-  <h2>Song details:</h2>
+  <h2>Song Details</h2>
 </div>
 <hr>
 <div class="row mb-1 justify-content-center">
@@ -10,7 +10,7 @@
       <!-- leave blank if no comments -->
     <% else %>
       <div class="card-img-overlay">
-        <h1 class="text-left text-primary">
+        <h1 class="text-left text-info">
           <%= Comment.all.where(song_id: a_track.id).count %>
           <i class="far fa-comments"></i>
         </h1>
