@@ -41,8 +41,8 @@ class UserAuthenticationController < ApplicationController
     @user.email = params.fetch("query_email").downcase
     @user.password = params.fetch("query_password")
     @user.password_confirmation = params.fetch("query_password_confirmation")
-    @user.first_name = params.fetch("query_first_name")
-    @user.last_name = params.fetch("query_last_name")
+    @user.first_name = params.fetch("query_first_name").titleize
+    @user.last_name = params.fetch("query_last_name").titleize
     @user.user_name = params.fetch("query_user_name").downcase
     @user.received_follow_requests_count = 0
     @user.sent_follow_requests_count = 0
@@ -67,8 +67,8 @@ class UserAuthenticationController < ApplicationController
     @user.email = params.fetch("query_email").downcase
     @user.password = params.fetch("query_password")
     @user.password_confirmation = params.fetch("query_password_confirmation")
-    @user.first_name = params.fetch("query_first_name")
-    @user.last_name = params.fetch("query_last_name")
+    @user.first_name = params.fetch("query_first_name").titleize
+    @user.last_name = params.fetch("query_last_name").titleize
     @user.user_name = params.fetch("query_user_name").downcase
     #@user.received_follow_requests_count = params.fetch("query_received_follow_requests_count")
     #@user.sent_follow_requests_count = params.fetch("query_sent_follow_requests_count")
