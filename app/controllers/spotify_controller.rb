@@ -27,6 +27,23 @@ class SpotifyController < ApplicationController
 
   end
 
+  def user_feed
+    follow_ids = @current_user.follows.pluck(:recipient_id)
+    follow_ids = follow_ids.push(@current_user.id)
+    
+    feed_likes = Like.all.where(user_id: follow_ids).order(created_at: "asc")
+    
+    if feed_likes.count == 0
+      @tracks = 0
+    else
+      unique_feed_likes = feed_likes.uniq(&:song_id)
+      feed_song_ids = unique_feed_likes.pluck(:song_id)
+      @tracks = RSpotify::Track.find(feed_song_ids)
+    end
+
+    render({template: "/likes/user_feed.html.erb"})
+  end
+
   def return_search_results
     
     song_name = params.fetch("query_song_name")

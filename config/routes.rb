@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get("/search", {:controller => "spotify", :action => "search_form"})
   get("/search_results", {:controller => "spotify", :action => "return_search_results"})
   get("/song/:path_id", {controller: "spotify", action: "song_details"})
+  get("/feed", {controller: "spotify", action: "user_feed"})
   
   # Routes for the Comment resource:
 

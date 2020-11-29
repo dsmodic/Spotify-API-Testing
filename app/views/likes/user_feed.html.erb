@@ -1,23 +1,15 @@
-<% if @the_user.id == @current_user.id %>
-  <div class="text-center">
-    <h2>Your Likes <i class="fas fa-heart"></i></h2>
-  </div>
-  <div class="text-center">
-    <small>The songs that you like.</small>
-  </div>
-<% else %>
-  <div class="text-center">
-    <h2><%= @the_user.first_name %>'s Likes <i class="fas fa-heart"></i></h2>
-  </div>
-  <div class="text-center">
-    <small>The songs that <%= @the_user.first_name %> <%= @the_user.last_name %> likes.</small>
-  </div>
-<% end %>
+<div class="text-center">
+  <h2>Your Feed <i class="fab fa-slideshare"></i></h2>
+</div>
+<div class="text-center">
+  <small>The songs that you and the people you follow like.</small>
+</div>
 
 <hr>
+
 <% if @tracks == 0 %>
   <div class="text-center">
-    <p>No songs have been liked yet.</p>
+    <p>Nothing to see yet.</p>
   </div>
 <% else %>
   <div class="row mb-5 justify-content-center">  
