@@ -7,7 +7,7 @@ class UserAuthenticationController < ApplicationController
   end
 
   def create_cookie
-    user = User.where({ :email => params.fetch("query_email") }).first
+    user = User.where({ :email => params.fetch("query_email").downcase }).first
     
     the_supplied_password = params.fetch("query_password")
     
@@ -38,7 +38,7 @@ class UserAuthenticationController < ApplicationController
 
   def create
     @user = User.new
-    @user.email = params.fetch("query_email")
+    @user.email = params.fetch("query_email").downcase
     @user.password = params.fetch("query_password")
     @user.password_confirmation = params.fetch("query_password_confirmation")
     @user.first_name = params.fetch("query_first_name")
@@ -64,7 +64,7 @@ class UserAuthenticationController < ApplicationController
 
   def update
     @user = @current_user
-    @user.email = params.fetch("query_email")
+    @user.email = params.fetch("query_email").downcase
     @user.password = params.fetch("query_password")
     @user.password_confirmation = params.fetch("query_password_confirmation")
     @user.first_name = params.fetch("query_first_name")
