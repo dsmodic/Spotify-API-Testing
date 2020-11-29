@@ -53,7 +53,7 @@
         <ul class="list-group">
           <% @non_followed_users.each do |a_non_followed_user| %>
             <li class="list-group-item">
-              <a href="/users/<%= a_non_followed_user.id %>">
+              <a href="/user/<%= a_non_followed_user.id %>">
                 <%= a_non_followed_user.first_name %> <%= a_non_followed_user.last_name %>
                 (<%= a_non_followed_user.user_name %>)
               </a>
