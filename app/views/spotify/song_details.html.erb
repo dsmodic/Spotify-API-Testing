@@ -10,7 +10,7 @@
       <!-- leave blank if no comments -->
     <% else %>
       <div class="card-img-overlay">
-        <h1 class="text-left text-light">
+        <h1 class="text-left text-primary">
           <%= Comment.all.where(song_id: a_track.id).count %>
           <i class="far fa-comments"></i>
         </h1>
