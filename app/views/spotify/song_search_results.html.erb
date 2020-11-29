@@ -21,9 +21,13 @@
         
         <div class="card-img-overlay">
             <h1 class="text-right">
-              <a href="<%= a_track.preview_url %>" class="text-light">
-                <i class="far fa-play-circle"></i>
-              </a>
+              <% if a_track.preview_url.nil? %>
+                <!-- Intentionally blank -->
+              <% else %>
+                <a href="<%= a_track.preview_url %>" class="text-light">
+                  <i class="far fa-play-circle"></i>
+                </a>
+              <% end %>
             </h1>
         </div>
         

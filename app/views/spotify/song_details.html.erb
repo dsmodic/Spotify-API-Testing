@@ -18,9 +18,13 @@
     <% end %>
     <div class="card-img-overlay">
       <h1 class="text-right">
-        <a href="<%= a_track.preview_url %>" class="text-light">
-          <i class="far fa-play-circle"></i>
-        </a>
+        <% if a_track.preview_url.nil? %>
+          <!-- Intentionally blank -->
+        <% else %>
+          <a href="<%= a_track.preview_url %>" class="text-light">
+            <i class="far fa-play-circle"></i>
+          </a>
+        <% end %>
       </h1>
     </div>
     <div class="card-body">
@@ -83,19 +87,22 @@
             </button>
           </form>
         <% end %>
-      </div>  <!-- likes div -->
-    </div>  <!-- card body -->
-  </div>  <!-- card -->
-</div> <!-- row -->
-
+      </div>
+        <!-- likes div -->
+    </div>
+      <!-- card body -->
+  </div>
+    <!-- card -->
+</div>
+ <!-- row -->
 <div class="row mb-1 justify-content-center">
   <div class="card mb-2" style="width: 18rem;">
     <div class="card-header">
       <h3 class="card-title">
         Comments:
       </h3>
-    </div>    
-    <div class="card-body">  
+    </div>
+    <div class="card-body">
       <ul class="list-unstyled pt-2">
         <% Comment.all.where(song_id: a_track.id).order(created_at: "asc").each do |a_comment| %>
           <li class="media mb-2">
@@ -109,19 +116,17 @@
                 </small>
               </h6>
               <%= a_comment.body %>
-              
-                <% if a_comment.commenter_id == @current_user.id %>
-                  <small>  
-                    <form action="/delete_comment" method="post">
-                      <input type="hidden" name="query_song_id" value="<%= a_comment.song_id %>">
-                      <input type="hidden" name="query_id" value="<%= a_comment.id %>">
-                      <button class="btn btn-link card-link">
-                        (delete your comment)
-                      </button>
-                    </form>
-                  </small>
-                <% end %>
-              
+              <% if a_comment.commenter_id == @current_user.id %>
+                <small>
+                  <form action="/delete_comment" method="post">
+                    <input type="hidden" name="query_song_id" value="<%= a_comment.song_id %>">
+                    <input type="hidden" name="query_id" value="<%= a_comment.id %>">
+                    <button class="btn btn-link card-link">
+                      (delete your comment)
+                    </button>
+                  </form>
+                </small>
+              <% end %>
             </div>
           </li>
         <% end %>
@@ -150,10 +155,14 @@
           </div>
           <!-- media body -->
         </li>
-      </ul>  <!-- commment list -->
-    </div>  <!-- card body -->
-  </div>  <!-- card -->
-</div> <!-- row -->
+      </ul>
+        <!-- commment list -->
+    </div>
+      <!-- card body -->
+  </div>
+    <!-- card -->
+</div>
+ <!-- row -->
 <% if follow_likes.count < 2 %>
   <!-- Intentionally left blank -->
 <% else %>
